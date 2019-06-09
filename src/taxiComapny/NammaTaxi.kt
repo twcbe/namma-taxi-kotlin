@@ -9,10 +9,52 @@ fun main(args: Array<String>) {
     val mini = Vehicle("mini")
     val sedan = Vehicle("sedan")
     val suv = Vehicle("suv")
-    val totalDistance = readLine()!!.toDouble()
-    println("Mini - ${getCharges(mini, totalDistance)} , " +
-            "Sedan - ${getCharges(sedan, totalDistance)} ," +
-            " SUV - ${getCharges(suv, totalDistance)}")
+    val usage = HashMap<String,Int>()
+
+    var input: String?
+
+    do{
+        input = readLine()
+        val split = input!!.split(",")
+        val totalDistance = split.first().toDouble()
+        val mobile = split.last()
+
+        var isAnOldCustomer = usage.get(mobile)
+        if(isAnOldCustomer == null ){
+            usage.put(mobile, 1)
+        }else{
+            usage.put(mobile, ++isAnOldCustomer)
+        }
+
+        val miniCharges = getCharges(mini, totalDistance)
+        val count = usage.get(mobile)!!.toInt()
+        val miniChargesWithDiscount = applyDiscount(miniCharges, count)
+
+        val sedanCharges = getCharges(sedan, totalDistance)
+        val sedanChargesWithDiscount = applyDiscount(sedanCharges, count)
+
+        val suvCharges = getCharges(suv, totalDistance)
+        val suvChargesWithDiscount = applyDiscount(suvCharges, count)
+
+        println("Mini - $miniChargesWithDiscount , " +
+                "Sedan - $sedanChargesWithDiscount ," +
+                " SUV - $suvChargesWithDiscount")
+
+    }while (!input.equals("exit", ignoreCase = true))
+}
+
+fun applyDiscount(chargesWithoutDiscount: Double, count: Int): Double {
+    var withDiscount: Double
+    when {
+        count == 1 -> withDiscount = discount(chargesWithoutDiscount){ it - it*0.25}
+        count % 2 != 0 -> withDiscount = discount(chargesWithoutDiscount){ it - it*0.10}
+        else -> withDiscount = chargesWithoutDiscount
+    }
+    return withDiscount
+}
+
+fun discount(chargesWithoutDiscount: Double, apply: (Double) -> Double):Double {
+    return apply(chargesWithoutDiscount)
 }
 
 fun getCharges(mini: Vehicle, totalDistance: Double):Double {
@@ -26,7 +68,7 @@ fun getCharges(mini: Vehicle, totalDistance: Double):Double {
     when(totalDistance){
         in 1.0..base!!.km -> charge = base.amt
         in base.km..next!!.km ->  charge = base.amt + (next.amt * (totalDistance - base.km))
-        in next.km..total!!.km ->  charge = base.amt + (next.amt * next.km) + (additional!!.amt * (totalDistance-base.km-next.km))
+        in next.km..total.km ->  charge = base.amt + (next.amt * next.km) + (additional!!.amt * (totalDistance-base.km-next.km))
         else  ->  charge = totalDistance * total.amt
     }
     return charge
