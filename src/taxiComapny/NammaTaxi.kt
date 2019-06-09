@@ -20,10 +20,9 @@ fun main(args: Array<String>) {
         val mobile = split.last()
 
         var isAnOldCustomer = usage.get(mobile)
-        if(isAnOldCustomer == null ){
-            usage.put(mobile, 1)
-        }else{
-            usage.put(mobile, ++isAnOldCustomer)
+        when (isAnOldCustomer) {
+            null -> usage.put(mobile, 1)
+            else -> usage.put(mobile, ++isAnOldCustomer)
         }
 
         val miniCharges = getCharges(mini, totalDistance)
