@@ -9,11 +9,11 @@ fun main(args: Array<String>) {
     val mini = Vehicle("mini")
     val sedan = Vehicle("sedan")
     val suv = Vehicle("suv")
-    val usage = HashMap<String,Int>()
+    val usage = HashMap<String, Int>()
 
     var input: String?
 
-    do{
+    do {
         input = readLine()
         val split = input!!.split(",")
         val totalDistance = split.first().toDouble()
@@ -25,20 +25,30 @@ fun main(args: Array<String>) {
             else -> usage.put(mobile, ++isAnOldCustomer)
         }
 
-        val miniCharges = getCharges(mini, totalDistance)
-        val count = usage.get(mobile)!!.toInt()
-        val miniChargesWithDiscount = calculateDiscount(miniCharges, count)
+        
+        val charges = listOf(mini, sedan, suv).map {
+            val count = usage.get(mobile)!!.toInt();
+            Pair(it.type, getChargesAndDiscount(it, totalDistance, count))
+        }
 
-        val sedanCharges = getCharges(sedan, totalDistance)
-        val sedanChargesWithDiscount = calculateDiscount(sedanCharges, count)
+        displayCharges(charges)
 
-        val suvCharges = getCharges(suv, totalDistance)
-        val suvChargesWithDiscount = calculateDiscount(suvCharges, count)
-
-        println("Mini - $miniChargesWithDiscount , " +
-                "Sedan - $sedanChargesWithDiscount ," +
-                " SUV - $suvChargesWithDiscount")
-
-    }while (!input.equals("exit", ignoreCase = true))
+    } while (!input.equals("exit", ignoreCase = true))
 }
 
+fun getChargesAndDiscount(vehicle: Vehicle, totalDistance: Double, count: Int): Pair<Double, Double> {
+    val charges = getCharges(vehicle, totalDistance)
+    val chargesWithDiscount = calculateDiscount(charges, count)
+    return Pair(charges, chargesWithDiscount);
+}
+
+fun displayCharges(charges: List<Pair<String, Pair<Double, Double>>>) {
+    charges.map {
+        println(
+            "${it.first} - "
+                    + "Price ${it.second.first}, "
+                    + "Discounted Price ${it.second.second}, "
+        )
+    }
+
+}

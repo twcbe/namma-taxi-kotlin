@@ -1,9 +1,10 @@
 package taxiComapny
 
-class Vehicle (type:String) {
-    val fare:HashMap<String, Fare> = HashMap()
-    init{
-        when(type){
+data class Vehicle(val type: String) {
+    val fare: HashMap<String, Fare> = HashMap()
+
+    init {
+        when (type) {
             "mini" -> {
                 fare.put(BASE, Fare(3.0, 50.0))
                 fare.put(NEXT, Fare(15.0, 10.0))
@@ -27,4 +28,4 @@ class Vehicle (type:String) {
     }
 }
 
-class Fare(val km:Double, val amt:Double = 0.0)
+data class Fare(val km: Double, val amt: Double = 0.0)
