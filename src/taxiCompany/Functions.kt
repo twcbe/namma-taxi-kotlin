@@ -1,4 +1,4 @@
-package taxiComapny
+package taxiCompany
 
 
 fun calculateDiscount(chargesWithoutDiscount: Double, count: Int): Double =
@@ -14,12 +14,12 @@ fun discount(chargesWithoutDiscount: Double, apply: (Double) -> Double): Double 
 }
 
 fun getCharges(mini: Vehicle, totalDistance: Double): Double {
-    
+
     val fare = mini.fare;
-    val base = fare.get(BASE)
-    val next = fare.get(NEXT)
-    val additional = fare.get(ADDITIONAL)
-    var total = fare.get(TOTAL) ?: Fare(totalDistance)
+    val base = fare[BASE]
+    val next = fare[NEXT]
+    val additional = fare[ADDITIONAL]
+    var total = fare[TOTAL] ?: Fare(totalDistance)
     return when (totalDistance) {
         in 1.0..base!!.km -> base.amt
         in base.km..next!!.km -> base.amt + (next.amt * (totalDistance - base.km))

@@ -1,9 +1,5 @@
-package taxiComapny
+package taxiCompany
 
-val BASE = "base"
-val NEXT = "next"
-val ADDITIONAL = "additional"
-val TOTAL = "total"
 
 fun main(args: Array<String>) {
     val mini = Vehicle("mini")
@@ -19,15 +15,15 @@ fun main(args: Array<String>) {
         val totalDistance = split.first().toDouble()
         val mobile = split.last()
 
-        var isAnOldCustomer = usage.get(mobile)
+        var isAnOldCustomer = usage[mobile]
         when (isAnOldCustomer) {
             null -> usage.put(mobile, 1)
             else -> usage.put(mobile, ++isAnOldCustomer)
         }
 
-        
+
         val charges = listOf(mini, sedan, suv).map {
-            val count = usage.get(mobile)!!.toInt();
+            val count = usage[mobile]!!.toInt();
             Pair(it.type, getChargesAndDiscount(it, totalDistance, count))
         }
 
