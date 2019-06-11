@@ -1,7 +1,12 @@
 package taxiCompany
 
+import nammaTaxi.nammaTaxi
+
 
 fun main(args: Array<String>) {
+
+    nammaTaxi()
+    
     val mini = Vehicle("mini")
     val sedan = Vehicle("sedan")
     val suv = Vehicle("suv")
